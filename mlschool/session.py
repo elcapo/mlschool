@@ -1,10 +1,11 @@
 import boto3
-from mlschool.settings import Settings
 import sagemaker
+
+from mlschool.settings import Settings
 from sagemaker.workflow.pipeline_context import PipelineSession, LocalPipelineSession
 
 class Session:
-    def __init__(self, settings):
+    def __init__(self, settings: Settings):
         if settings.isLocal():
             self.config = {
                 "session": LocalPipelineSession(default_bucket=settings.getAwsBucket()),
@@ -22,9 +23,7 @@ class Session:
 
         self.config["framework_version"] = "2.11"
         self.config["py_version"] = "py39"
-    
-    def getSession(self):
-        return sagemaker.session.Session()
+        self.settings = settings
     
     def getSagemakerClient(self):
         return boto3.client("sagemaker")
@@ -35,3 +34,8 @@ class Session:
     def getRegion(self):
         return boto3.Session().region_name
     
+    def getConfig(self):
+        return self.config
+    
+    def getSettings(self):
+        return self.settings

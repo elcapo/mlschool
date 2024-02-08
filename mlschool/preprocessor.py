@@ -1,15 +1,15 @@
-import os
-import tarfile
-import tempfile
 import joblib
 import numpy as np
+import os
 import pandas as pd
+import tarfile
+import tempfile
 
 from pathlib import Path
 from sklearn.compose import ColumnTransformer, make_column_selector
 from sklearn.impute import SimpleImputer
-from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, OrdinalEncoder
 
 def preprocess(base_directory):
