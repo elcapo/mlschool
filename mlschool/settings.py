@@ -1,13 +1,17 @@
-from dotenv import load_dotenv
 import logging
 import json
 import os
-from pathlib import Path
+import pathlib
+import shutil
+import subprocess
 import sys
 
+from dotenv import load_dotenv
+from pathlib import Path
+
 class Settings:
-    def __init__(self, local_mode=True):
-        load_dotenv()
+    def __init__(self, local_mode=True, env_file=".env"):
+        load_dotenv(dotenv_path=env_file, override=True)
 
         self.code_folder = Path("code")
         self.code_folder.mkdir(parents=True, exist_ok=True)
@@ -17,7 +21,11 @@ class Settings:
 
         sys.path.extend([f"./{self.code_folder}", f"./{self.inference_code_folder}"])
 
-        self.data_filepath = "penguins.csv"
+        self.data_folder = Path("data")
+        self.data_filepath = self.data_folder.joinpath("penguins.csv")
+
+        self.mlschool_code_folder = pathlib.Path(__file__).parent.resolve()
+        shutil.copyfile(self.mlschool_code_folder.joinpath("preprocessor.py"), self.code_folder.joinpath("preprocessor.py"))
 
         self.setLoggingLevel()
         self.setMode(local_mode)
